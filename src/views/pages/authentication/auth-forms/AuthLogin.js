@@ -85,7 +85,7 @@ const FirebaseLogin = ({ ...others }) => {
                             setStatus({ success: true });
                             setSubmitting(true);
                             setCookie(response.data);
-                            window.location.href = '/free';
+                            window.location.href = '/';
                         }
                     } catch (err) {
                         setStatus({ success: false });
