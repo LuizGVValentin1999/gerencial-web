@@ -24,7 +24,6 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 
 // project imports
-import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 
 // assets
@@ -32,7 +31,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import axios from '../../../../api/axios';
-import csrf from '../../../../api/csrf';
+import { setCookie } from '../../../../api/csrf';
 
 const LOGIN_URL = '/auth';
 
@@ -40,7 +39,6 @@ const LOGIN_URL = '/auth';
 
 const FirebaseLogin = ({ ...others }) => {
     const theme = useTheme();
-    const scriptedRef = useScriptRef();
     const [checked, setChecked] = useState(true);
 
     const googleHandler = async () => {
@@ -78,23 +76,21 @@ const FirebaseLogin = ({ ...others }) => {
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
-                        // const token = await csrf.getCookie();
                         const response = await axios.post(LOGIN_URL, {
                             email: values.email,
                             password: values.password
                         });
-                        console.log(response);
-                        if (scriptedRef.current) {
+                        if (response.data) {
+                            console.log(response.data);
                             setStatus({ success: true });
-                            setSubmitting(false);
+                            setSubmitting(true);
+                            setCookie(response.data);
+                            window.location.href = '/free';
                         }
                     } catch (err) {
-                        console.error(err);
-                        if (scriptedRef.current) {
-                            setStatus({ success: false });
-                            setErrors({ submit: err.message });
-                            setSubmitting(false);
-                        }
+                        setStatus({ success: false });
+                        setErrors({ submit: err.response.data });
+                        setSubmitting(false);
                     }
                 }}
             >

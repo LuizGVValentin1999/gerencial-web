@@ -1,8 +1,7 @@
 {
-    "name": "berry-material-react-free",
+    "name": "gerencial-web",
     "version": "3.1.0",
     "private": true,
-    "homepage": "https://berrydashboard.io/free",
     "dependencies": {
         "@emotion/cache": "^11.9.3",
         "@emotion/react": "^11.9.3",
