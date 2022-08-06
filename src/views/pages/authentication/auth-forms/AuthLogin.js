@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Cookie from 'js-cookie';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -29,6 +30,11 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 // assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
+import axios from '../../../../api/axios';
+import csrf from '../../../../api/csrf';
+
+const LOGIN_URL = '/auth';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
@@ -72,6 +78,12 @@ const FirebaseLogin = ({ ...others }) => {
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
+                        // const token = await csrf.getCookie();
+                        const response = await axios.post(LOGIN_URL, {
+                            email: values.email,
+                            password: values.password
+                        });
+                        console.log(response);
                         if (scriptedRef.current) {
                             setStatus({ success: true });
                             setSubmitting(false);
